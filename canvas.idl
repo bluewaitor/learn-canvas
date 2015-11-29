@@ -1,0 +1,176 @@
+/*
+    IDL
+    接口描述语言（Interface description language，缩写IDL）
+*/
+
+typedef (HTMLImageElement or
+         HTMLVideoElement or
+         HTMLCanvasElement) CanvasImageSource;
+
+interface CanvasRenderingContext2D {
+
+  // back-reference to the canvas
+  readonly attribute HTMLCanvasElement canvas;
+
+  // state (状态)
+  void save(); // push state on state stack(状态入栈)
+  void restore(); // pop state stack and restore state(状态出栈)
+
+  // transformations (default: transform is the identity matrix)恒等矩阵
+  // unrestricted 无限制
+  // 缩放
+  void scale(unrestricted double x, unrestricted double y);
+  // 旋转
+  void rotate(unrestricted double angle);
+  // 平移
+  void translate(unrestricted double x, unrestricted double y);
+  // 变换 矩阵变换
+  void transform(unrestricted double a, unrestricted double b, unrestricted double c, unrestricted double d, unrestricted double e, unrestricted double f);
+  void setTransform(unrestricted double a, unrestricted double b, unrestricted double c, unrestricted double d, unrestricted double e, unrestricted double f);
+
+  // 属性
+  // compositing(合成)
+           //全局透明度
+           attribute unrestricted double globalAlpha; // (default: 1.0)
+           //全局复合操作
+           attribute DOMString globalCompositeOperation; // (default: "source-over")
+
+  // colors and styles 颜色和样式(see also the CanvasDrawingStyles interface)
+           attribute (DOMString or CanvasGradient or CanvasPattern) strokeStyle; // (default: "black") 默认黑色
+           attribute (DOMString or CanvasGradient or CanvasPattern) fillStyle; // (default: "black") 默认黑色
+  CanvasGradient createLinearGradient(double x0, double y0, double x1, double y1); //线性渐变
+  CanvasGradient createRadialGradient(double x0, double y0, double r0, double x1, double y1, double r1); //径向渐变
+  CanvasPattern createPattern(CanvasImageSource image, [TreatNullAs=EmptyString] DOMString repetition); //图案
+
+  //属性
+  // shadows 阴影
+           attribute unrestricted double shadowOffsetX; // (default: 0) 阴影x偏移量
+           attribute unrestricted double shadowOffsetY; // (default: 0) 阴影y偏移量
+           attribute unrestricted double shadowBlur; // (default: 0) 阴影模糊半径
+           attribute DOMString shadowColor; // (default: "transparent black") 阴影颜色
+
+  // rects 矩形
+  // 清除矩形
+  void clearRect(unrestricted double x, unrestricted double y, unrestricted double w, unrestricted double h);
+  // 填充矩形
+  void fillRect(unrestricted double x, unrestricted double y, unrestricted double w, unrestricted double h);
+  // 描边矩形
+  void strokeRect(unrestricted double x, unrestricted double y, unrestricted double w, unrestricted double h);
+
+  // path API (see also CanvasPathMethods) 路径API
+  // 开始路径
+  void beginPath();
+  // 填充
+  void fill();
+  // 描边
+  void stroke();
+  // 用来给当前路径或特定路径绘制焦点的方法，如果给定的元素获取了焦点。
+  void drawFocusIfNeeded(Element element);
+  // 剪切路径
+  void clip();
+  // 判断点是否在路径中
+  boolean isPointInPath(unrestricted double x, unrestricted double y);
+
+  // text (see also the CanvasDrawingStyles interface) 文本
+  // 填充文字
+  void fillText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double maxWidth);
+  // 描边文字
+  void strokeText(DOMString text, unrestricted double x, unrestricted double y, optional unrestricted double maxWidth);
+  //测量文本
+  TextMetrics measureText(DOMString text);
+
+  // drawing images 画图
+  void drawImage(CanvasImageSource image, unrestricted double dx, unrestricted double dy);
+  void drawImage(CanvasImageSource image, unrestricted double dx, unrestricted double dy, unrestricted double dw, unrestricted double dh);
+  void drawImage(CanvasImageSource image, unrestricted double sx, unrestricted double sy, unrestricted double sw, unrestricted double sh, unrestricted double dx, unrestricted double dy, unrestricted double dw, unrestricted double dh);
+
+  // hit regions
+  // 给位图添加点击区域的方法。 它允许你很容易地实现一个点击区域， 让你触发 DOM 元素的事件， 去探索看不见的画布。
+  void addHitRegion(HitRegionOptions options);
+  // 删除canvas中已存在的碰撞区域的方法。
+  void removeHitRegion(DOMString id);
+  // 在画布中删除所有点击区域的方法。
+  void clearHitRegions();
+
+  // pixel manipulation 像素处理
+  // 创建一个 新的、空白的、指定大小的 ImageData 对象。 所有的像素在新对象中都是透明的。
+  ImageData createImageData(unrestricted double sw, unrestricted double sh);
+  ImageData createImageData(ImageData imagedata);
+  // 得到图像数据
+  ImageData getImageData(double sx, double sy, double sw, double sh);
+  // 将数据从已有的 {{domxref("ImageData")}} 对象绘制到位图的方法。 如果提供了脏矩形，只能绘制矩形的像素。
+  void putImageData(ImageData imagedata, double dx, double dy);
+  void putImageData(ImageData imagedata, double dx, double dy, double dirtyX, double dirtyY, double dirtyWidth, double dirtyHeight);
+};
+CanvasRenderingContext2D implements CanvasDrawingStyles;
+CanvasRenderingContext2D implements CanvasPathMethods;
+
+[NoInterfaceObject]
+interface CanvasDrawingStyles {
+  // line caps/joins
+           attribute unrestricted double lineWidth; // (default: 1) 线条宽度默认为1
+           attribute DOMString lineCap; // "butt", "round", "square" (default: "butt") 线段末端
+           attribute DOMString lineJoin; // "round", "bevel", "miter" (default: "miter") 用来设置2个长度不为0的相连部分（线段，圆弧，曲线）如何连接在一起的属性（长度为0的变形部分，其指定的末端和控制点在同一位置，会被忽略）。
+           attribute unrestricted double miterLimit; // (default: 10)设置斜接面限制比例的属性。 当获取属性值时， 会返回当前的值（默认值是10.0 ）。当给属性赋值时， 0、负数、 Infinity 和 NaN 都会被忽略；除此之外都会被赋予一个新值。
+
+  // dashed lines
+  void setLineDash(sequence<unrestricted double> segments); // (default: empty)设置虚线样式的方法
+  sequence<unrestricted double> getLineDash(); //获取当前线段样式的方法
+           attribute unrestricted double lineDashOffset; //设置虚线偏移量的属性，例如可以实现 “跑马灯“ 的效果。
+
+
+  // text
+           attribute DOMString font; // (default: "10px sans-serif") 字体
+           attribute DOMString textAlign; // "start", "end", "left", "right", "center" (default: "start") 字体对齐方式
+           attribute DOMString textBaseline; // "top", "hanging", "middle", "alphabetic", "ideographic", "bottom" (default: "alphabetic") 基线
+};
+
+[NoInterfaceObject]
+interface CanvasPathMethods {
+  // shared path API methods
+  //关闭路径
+  void closePath();
+  //移动到某个点
+  void moveTo(unrestricted double x, unrestricted double y);
+  //连接到某个点,但是不会绘制
+  void lineTo(unrestricted double x, unrestricted double y);
+  //新增二次贝塞尔曲线路径的方法。它需要2个点。 第一个点是控制点，第二个点是终点。 起始点是当前路径最新的点，当创建二次贝赛尔曲线之前，可以使用 moveTo() 方法进行改变。
+  void quadraticCurveTo(unrestricted double cpx, unrestricted double cpy, unrestricted double x, unrestricted double y);
+  //绘制三次贝赛尔曲线路径的方法。 该方法需要三个点。 第一、第二个点是控制点，第三个点是结束点。起始点是当前路径的最后一个点，绘制贝赛尔曲线前，可以通过调用 moveTo() 进行修改。
+  void bezierCurveTo(unrestricted double cp1x, unrestricted double cp1y, unrestricted double cp2x, unrestricted double cp2y, unrestricted double x, unrestricted double y);
+  // 根据控制点和半径绘制圆弧路径的方法，使用直线连接前一个点。
+  void arcTo(unrestricted double x1, unrestricted double y1, unrestricted double x2, unrestricted double y2, unrestricted double radius);
+  // 创建矩形路径的方法，矩形的起点位置是 (x, y) ，尺寸为 width 和 height。矩形的4个点通过直线连接，子路径做为闭合的标记，所以你可以填充或者描边矩形。
+  void rect(unrestricted double x, unrestricted double y, unrestricted double w, unrestricted double h);
+  // 绘制圆弧路径的方法。 圆弧路径的圆心在 (x, y) 位置，半径为 r ，根据anticlockwise （默认为顺时针）指定的方向从 startAngle 开始绘制，到 endAngle 结束。
+  void arc(unrestricted double x, unrestricted double y, unrestricted double radius, unrestricted double startAngle, unrestricted double endAngle, optional boolean counterclockwise = false);
+
+  };
+
+interface CanvasGradient {
+  // opaque object 不透明对象
+  // 添加渐变色
+  void addColorStop(double offset, DOMString color);
+};
+
+interface CanvasPattern {
+  // opaque object
+};
+
+interface TextMetrics {
+  readonly attribute double width;
+};
+
+dictionary HitRegionOptions {
+  // dictionary to allow expansion on Hit Regions in Canvas Context 2D Level 2
+  DOMString id = "";
+  // for control-backed regions:
+  Element? control = null;
+};
+
+// 图像数据
+interface ImageData {
+  readonly attribute unsigned long width;
+  readonly attribute unsigned long height;
+  readonly attribute Uint8ClampedArray data;
+};

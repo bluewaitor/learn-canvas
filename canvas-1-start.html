@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>canvas</title>
+    <style>
+        body{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+	<canvas id="canvas" style="border: 1px solid #aaa;margin: 0 auto;" >
+		您的浏览器不支持canvas，请使用较新的浏览器查看
+	</canvas>
+
+	<script>
+
+	window.onload = init;
+    function init(){
+		var canvas = document.getElementById('canvas');
+		var context = canvas.getContext('2d');
+        //如果没有设置宽高
+        console.log("canvas默认宽"+canvas.width);//300
+        console.log("canvas默认高"+canvas.height);//150
+        canvas.width = 800;
+        canvas.height = 800;
+        context.moveTo(100, 100);
+        context.lineTo(700, 700);
+        context.strokeStyle = "#aaa";
+        context.stroke();
+	}
+	</script>
+</body>
+</html>
