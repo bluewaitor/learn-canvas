@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas</title>
+    <style>
+        body {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" style="border: 1px solid #aaa;margin: 0 auto;" width="800" height="800">
+    您的浏览器不支持canvas，请使用较新的浏览器查看
+</canvas>
+<script>
+
+    window.onload = init;
+    function init() {
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+        //void arc(unrestricted double x, unrestricted double y, unrestricted double radius, unrestricted double startAngle, unrestricted double endAngle, optional boolean counterclockwise = false);
+        //圆心x点,圆心y点,半径,开始角度,结束角度,逆时针(false就是顺时针)
+        context.beginPath();
+        context.arc(200,200,200,0,Math.PI,false);
+        context.stroke();
+        context.closePath();
+        context.beginPath();
+        context.arc(600,600,200,0,Math.PI,true);
+        context.stroke();
+        context.closePath();
+
+    }
+</script>
+</body>
+</html>

@@ -19,11 +19,42 @@
     function init() {
 
         var canvas = document.getElementById("canvas");
-        var ctx = canvas.getContext("2d");
+        var context = canvas.getContext("2d");
 
-        ctx.moveTo(10,10);
-        ctx.arc(100,100,50,0,Math.PI,false);
-        ctx.stroke();
+
+        context.beginPath();
+        context.moveTo(100,100);
+        context.lineTo(700,100);
+        context.stroke();
+        context.closePath();
+
+        context.beginPath();
+        context.moveTo(100,200);
+        context.lineTo(700,200);
+        context.lineWidth = 10;
+        context.stroke();
+        context.closePath();
+
+        drawLine(context,100,300,700,300,10,"butt");
+        drawLine(context,100,400,700,400,10,"round");
+        drawLine(context,100,500,700,500,10,"square");
+
+
+        drawLine(context,100,50,100,750,1);
+        drawLine(context,700,50,700,750,1);
+
+
+    }
+
+    function drawLine(context,sx,sy,dx,dy,lineWidth,lineCap,strokeStyle){
+        context.beginPath();
+        context.moveTo(sx,sy);
+        context.lineTo(dx,dy);
+        context.lineWidth = lineWidth ? lineWidth : 1;
+        context.strokeStyle = strokeStyle ? strokeStyle : "#000";
+        context.lineCap = lineCap ? lineCap : "butt";
+        context.stroke();
+        context.closePath();
     }
 </script>
 </body>

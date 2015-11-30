@@ -20,8 +20,19 @@
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
 
-        context.rect(100,100,600,600);
-        context.stroke();
+        //直接画描边的矩形
+        context.strokeRect(100,100,600,600);
+
+        //直接画填充的矩形
+        context.fillRect(200,200,400,400);
+
+        //清空一块矩形区域
+        context.clearRect(300,300,200,200);
+
+        //预先描绘路径
+        context.rect(350,350,100,100);
+        //填充
+        context.fill();
 
     }
 </script>
