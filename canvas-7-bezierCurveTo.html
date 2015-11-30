@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas</title>
+    <style>
+        body {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" style="border: 1px solid #aaa;margin: 0 auto;" width="800" height="800">
+    您的浏览器不支持canvas，请使用较新的浏览器查看
+</canvas>
+
+<script>
+
+    window.onload = init;
+    function init() {
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+
+        context.moveTo(200,200);
+        context.bezierCurveTo(250,300,350,100,500,300);
+        context.lineTo(200,250);
+        context.fill();
+
+        context.beginPath();
+        context.arc(200,200,5,0,2*Math.PI,false);
+        context.fill();
+
+        context.beginPath();
+        context.fillStyle = "#f00";
+        context.arc(250,300,5,0,2*Math.PI,false);
+        context.fill();
+
+        context.beginPath();
+        context.arc(350,100,5,0,2*Math.PI,false);
+        context.fill();
+
+        context.beginPath();
+        context.arc(500,300,5,0,2*Math.PI,false);
+        context.fillStyle = "#000";
+        context.fill();
+
+
+    }
+</script>
+</body>
+</html>

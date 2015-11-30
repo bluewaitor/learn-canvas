@@ -20,17 +20,24 @@
     function init() {
         var canvas = document.getElementById('canvas');
         var context = canvas.getContext('2d');
-        //void arc(unrestricted double x, unrestricted double y, unrestricted double radius, unrestricted double startAngle, unrestricted double endAngle, optional boolean counterclockwise = false);
-        //圆心x点,圆心y点,半径,开始角度,结束角度,逆时针(false就是顺时针)
-        context.beginPath();
-        context.arc(200,200,200,0,Math.PI,false);
-        context.stroke();
-        context.closePath();
-        context.beginPath();
-        context.arc(600,600,200,0,Math.PI,true);
-        context.stroke();
-        context.closePath();
 
+        context.moveTo(100,100);
+        context.quadraticCurveTo(200,50, 200,200);
+        context.stroke();
+
+        context.beginPath();
+        context.arc(100,100,10,0,2*Math.PI,false);
+        context.fill();
+
+        context.beginPath();
+        context.fillStyle = "#f00";
+        context.arc(200,50,10,0,2*Math.PI,false);
+        context.fill();
+
+        context.beginPath();
+        context.fillStyle = "#000";
+        context.arc(200,200,10,0,2*Math.PI,false);
+        context.fill();
     }
 </script>
 </body>
