@@ -17,13 +17,23 @@
 
     window.onload = init;
     function init() {
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
 
-        var canvas = document.getElementById("canvas");
-        var ctx = canvas.getContext("2d");
+        //直接画描边的矩形
+        context.strokeRect(100,100,600,600);
 
-        ctx.moveTo(10,10);
-        ctx.arc(100,100,50,0,Math.PI,false);
-        ctx.stroke();
+        //直接画填充的矩形
+        context.fillRect(200,200,400,400);
+
+        //清空一块矩形区域
+        context.clearRect(300,300,200,200);
+
+        //预先描绘路径
+        context.rect(350,350,100,100);
+        //填充
+        context.fill();
+
     }
 </script>
 </body>
