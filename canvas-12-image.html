@@ -19,20 +19,23 @@
 
 
 <div>
-    <button id="black-white">黑白</button>
+    <button id="blackWhite">黑白</button>
     <button id="grey">灰色</button>
+    <button id="negative">底片</button>
+    <button id="oldPicture">老照片</button>
 </div>
 <script>
 
-    window.onload = init;
     function init() {
         var canvasSrc = document.getElementById('canvasSrc');
         var contextSrc = canvasSrc.getContext('2d');
         var canvasDest = document.getElementById('canvasDest');
         var contextDest = canvasDest.getContext('2d');
 
-        var blackWhite = document.getElementById('black-white');
+        var blackWhite = document.getElementById('blackWhite');
         var grey = document.getElementById('grey');
+        var negative = document.getElementById('negative');
+        var oldPicture = document.getElementById('oldPicture');
 
         var img = new Image();
         img.src = "./images/rainbow.jpeg";
@@ -43,15 +46,11 @@
         };
 
 
-        blackWhite.onclick = function(){
+        function funcBlackWhite(){
             var imgData = contextSrc.getImageData(0,0,canvasSrc.width,canvasSrc.height);
             var pixelData = imgData.data;
             var len = pixelData.length;
             for(var i = 0; i < len; i++){
-//                var r = pixelData[i*4];
-//                var g = pixelData[i*4+1];
-//                var b = pixelData[i*4+2];
-//                var a = pixelData[i*4+3];
                 if(pixelData[i*4]>255/2){
                     pixelData[i*4] = 255;
                 }else{
@@ -73,9 +72,10 @@
             canvasDest.width = canvasSrc.width;
             canvasDest.height = canvasSrc.height;
             contextDest.putImageData(imgData,0,0,0,0,canvasDest.width,canvasDest.height);
-        };
+        }
 
-        grey.addEventListener("click",function(){
+
+        function funcGrey(){
             var imgData = contextSrc.getImageData(0,0,canvasSrc.width,canvasSrc.height);
             var pixelData = imgData.data;
             var len = pixelData.length;
@@ -94,10 +94,55 @@
             canvasDest.width = canvasSrc.width;
             canvasDest.height = canvasSrc.height;
             contextDest.putImageData(imgData,0,0,0,0,canvasDest.width,canvasDest.height);
-        },false);
+        }
+        function funcNegative(){
+            var imgData = contextSrc.getImageData(0,0,canvasSrc.width,canvasSrc.height);
+            var pixelData = imgData.data;
+            var len = pixelData.length;
+            for(var i = 0; i < len; i++){
+                var r = pixelData[i*4];
+                var g = pixelData[i*4+1];
+                var b = pixelData[i*4+2];
+                var a = pixelData[i*4+3];
+
+                pixelData[i*4] = Math.min(255,Math.max(0,255-r));
+                pixelData[i*4+1] = Math.min(255,Math.max(0,255-g));
+                pixelData[i*4+2] = Math.min(255,Math.max(0,255-b));
+
+            }
+            canvasDest.width = canvasSrc.width;
+            canvasDest.height = canvasSrc.height;
+            contextDest.putImageData(imgData,0,0,0,0,canvasDest.width,canvasDest.height);
+        }
 
 
+        function funcOldPicture(){
+            var imgData = contextSrc.getImageData(0,0,canvasSrc.width,canvasSrc.height);
+            var pixelData = imgData.data;
+            var len = pixelData.length;
+            for(var i = 0; i < len; i++){
+                var r = pixelData[i*4];
+                var g = pixelData[i*4+1];
+                var b = pixelData[i*4+2];
+                var a = pixelData[i*4+3];
+
+                pixelData[i*4] = Math.min(255,Math.max(0,parseInt(0.393 * r + 0.769 * g + 0.189 * b)));
+                pixelData[i*4+1] = Math.min(255,Math.max(0,parseInt(0.349 * r + 0.686 * g + 0.168 * b)));
+                pixelData[i*4+2] = Math.min(255,Math.max(0,parseInt(0.272 * r + 0.534 * g + 0.131 * b)));
+
+            }
+            canvasDest.width = canvasSrc.width;
+            canvasDest.height = canvasSrc.height;
+            contextDest.putImageData(imgData,0,0,0,0,canvasDest.width,canvasDest.height);
+        }
+        
+        blackWhite.addEventListener("click",funcBlackWhite,false);
+        grey.addEventListener("click",funcGrey,false);
+        oldPicture.addEventListener("click",funcOldPicture,false);
+        negative.addEventListener("click",funcNegative,false);
     }
+
+    window.addEventListener("load",init,false);
 </script>
 </body>
 </html>
