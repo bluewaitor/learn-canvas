@@ -23,6 +23,11 @@
     <button id="grey">灰色</button>
     <button id="negative">底片</button>
     <button id="oldPicture">老照片</button>
+    <button id="movie">电影海报</button>
+</div>
+
+<div>
+    <a id="save" >保存</a>
 </div>
 <script>
 
@@ -36,6 +41,8 @@
         var grey = document.getElementById('grey');
         var negative = document.getElementById('negative');
         var oldPicture = document.getElementById('oldPicture');
+        var movie = document.getElementById('movie');
+        var save = document.getElementById('save');
 
         var img = new Image();
         img.src = "./images/rainbow.jpeg";
@@ -135,11 +142,43 @@
             canvasDest.height = canvasSrc.height;
             contextDest.putImageData(imgData,0,0,0,0,canvasDest.width,canvasDest.height);
         }
-        
+
+
+        function funcMovie(){
+            var imgData = contextSrc.getImageData(0,0,canvasSrc.width,canvasSrc.height);
+            var pixelData = imgData.data;
+            var len = pixelData.length;
+            for(var i = 0; i < len; i++){
+                var r = pixelData[i*4];
+                var g = pixelData[i*4+1];
+                var b = pixelData[i*4+2];
+                var a = pixelData[i*4+3];
+
+                pixelData[i*4] = Math.min(255,Math.max(0,r > 128 ? 192 : 64));
+                pixelData[i*4+1] = Math.min(255,Math.max(0,g > 128 ? 192 : 64));
+                pixelData[i*4+2] = Math.min(255,Math.max(0,b > 128 ? 192 : 64));
+
+            }
+            canvasDest.width = canvasSrc.width;
+            canvasDest.height = canvasSrc.height;
+            contextDest.putImageData(imgData,0,0,0,0,canvasDest.width,canvasDest.height);
+        }
+
+
         blackWhite.addEventListener("click",funcBlackWhite,false);
         grey.addEventListener("click",funcGrey,false);
         oldPicture.addEventListener("click",funcOldPicture,false);
         negative.addEventListener("click",funcNegative,false);
+        movie.addEventListener("click",funcMovie,false);
+
+
+
+
+        function saveAsPic(){
+            save.download = "blue's png";
+            save.setAttribute("href", canvasDest.toDataURL());
+        }
+        save.addEventListener("click",saveAsPic,false);
     }
 
     window.addEventListener("load",init,false);
