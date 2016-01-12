@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>canvas</title>
+    <style>
+        body {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvasSrc" style="border: 1px solid #aaa;margin: 0 auto;">
+    您的浏览器不支持canvas，请使用较新的浏览器查看
+</canvas>
+
+
+<script>
+
+    function init() {
+        var canvasSrc = document.getElementById('canvasSrc');
+        var contextSrc = canvasSrc.getContext('2d');
+
+        contextSrc.width = 800;
+        contextSrc.height  = 800;
+        var x = 0;
+        var y = 0;
+
+        setTimeout(step,1000);
+
+        function step(){
+            render();
+            update();
+            step();
+        }
+
+        function render(){
+
+            contextSrc.beginPath();
+            contextSrc.arc(x,y,10,0,2*Math.PI,false);
+            contextSrc.fill();
+            contextSrc.closePath();
+        }
+
+        function update(){
+            x+=1;
+            y+=1;
+            console.log(x);
+            console.log(y);
+        }
+    }
+
+    window.addEventListener("load",init,false);
+</script>
+</body>
+</html>
